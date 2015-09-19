@@ -1,0 +1,71 @@
+(pvs_hurry
+ (challenge1 0
+  (challenge1-1 nil 3651514280 ("" (assert) nil nil)
+   ((posint_plus_nnint_is_posint application-judgement "posint"
+     integers nil)
+    (even_plus_odd_is_odd application-judgement "odd_int" integers
+     nil))
+   shostak))
+ (challenge2a 0
+  (challenge2a-1 nil 3651514293
+   ("" (split)
+    (("1" (flatten)
+      (("1" (split)
+        (("1" (split) (("1" (propax) nil nil) ("2" (propax) nil nil))
+          nil)
+         ("2" (split)
+          (("1" (propax) nil nil)
+           ("2" (split) (("1" (propax) nil nil) ("2" (propax) nil nil))
+            nil))
+          nil))
+        nil))
+      nil)
+     ("2" (flatten)
+      (("2" (split)
+        (("1" (split) (("1" (flatten) nil nil) ("2" (flatten) nil nil))
+          nil)
+         ("2" (split) (("1" (flatten) nil nil) ("2" (flatten) nil nil))
+          nil))
+        nil))
+      nil))
+    nil)
+   nil shostak))
+ (challenge2b 0
+  (challenge2b-1 nil 3651514393 ("" (grind) nil nil) nil shostak))
+ (challenge3_TCC1 0
+  (challenge3_TCC1-1 nil 3651514279 ("" (subtype-tcc) nil nil)
+   ((/= const-decl "boolean" notequal nil)) nil))
+ (challenge3 0
+  (challenge3-1 nil 3651514465
+   ("" (skeep)
+    (("" (expand "^")
+      (("" (expand "expt")
+        (("" (expand "expt")
+          (("" (expand "expt") (("" (assert) nil nil)) nil)) nil))
+        nil))
+      nil))
+    nil)
+   ((^ const-decl "real" exponentiation nil)
+    (real_times_real_is_real application-judgement "real" reals nil)
+    (real_ge_is_total_order name-judgement "(total_order?[real])"
+     real_props nil)
+    (expt def-decl "real" exponentiation nil))
+   shostak))
+ (challenge4a_TCC1 0
+  (challenge4a_TCC1-1 nil 3651514279 ("" (subtype-tcc) nil nil) nil
+   nil))
+ (challenge4a 0
+  (challenge4a-1 nil 3651514659
+   ("" (skeep) (("" (assert) nil nil)) nil)
+   ((real_div_nzreal_is_real application-judgement "real" reals nil)
+    (posrat_div_posrat_is_posrat application-judgement "posrat"
+     rationals nil))
+   shostak))
+ (challenge4b 0
+  (challenge4b-1 nil 3651514645
+   ("" (skeep) (("" (assert) nil nil)) nil)
+   ((real_div_nzreal_is_real application-judgement "real" reals nil)
+    (posrat_div_posrat_is_posrat application-judgement "posrat"
+     rationals nil))
+   shostak)))
+

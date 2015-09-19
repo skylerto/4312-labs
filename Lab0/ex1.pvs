@@ -1,0 +1,6 @@
+ex1: THEORY
+BEGIN 
+      f(x:nat):nat = x+1
+
+    trivial: THEOREM (FORALL (x:nat): f(x) > x)
+END ex1

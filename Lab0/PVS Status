@@ -1,0 +1,12 @@
+ Proof summary for theory pvs_hurry
+    challenge1............................proved - complete   [shostak](0.04 s)
+    challenge2a...........................proved - complete   [shostak](0.03 s)
+    challenge2b...........................proved - complete   [shostak](-.00 s)
+    challenge3_TCC1.......................proved - complete   [shostak](0.01 s)
+    challenge3............................proved - complete   [shostak](0.02 s)
+    challenge4a_TCC1......................unfinished          [shostak](0.01 s)
+    challenge4a...........................proved - incomplete [shostak](0.02 s)
+    challenge4b...........................proved - complete   [shostak](0.02 s)
+    Theory totals: 8 formulas, 8 attempted, 7 succeeded (0.16 s)
+
+Grand Totals: 8 proofs, 8 attempted, 7 succeeded (0.16 s)

@@ -1,0 +1,65 @@
+%%%   Examples and exercises for basic predicate proofs
+%%%   Quantified Formulas  
+
+% Please use split, flatten, inst, and skolem (or skeep), and their 
+% variants, as appropriate. Do not use other proof rules.
+
+% Note that most of the lemmas can be discharged automatically
+% with (grind). However, doing grind will defeat the purpose
+% of the Excercise.
+
+%% Do not change anything in this file
+
+pred_basic: THEORY
+BEGIN
+
+arb: TYPE+                        % Arbitrary nonempty type
+
+arb_pred: TYPE = [arb -> bool]    % Predicate type for arb
+
+a,b,c: arb                        % Constants of type arb
+
+x,y,z: VAR arb                    % Variables of type arb
+
+P,Q,R: arb_pred                   % Predicate names
+
+%----------------------------------------------------------------
+
+quant_0: LEMMA  (FORALL x: P(x)) => P(a)
+
+quant_1: LEMMA  ((FORALL x: P(x) => Q(x)) AND P(a)) => Q(a)
+
+quant_2: LEMMA  (FORALL x: P(x)) => (EXISTS y: P(y))
+
+quant_3: LEMMA  (FORALL x: P(x)) OR (EXISTS y: NOT P(y))
+
+quant_4: LEMMA  NOT (FORALL x: P(x)) IFF (EXISTS x: NOT P(x))
+
+quant_5: LEMMA  NOT (EXISTS x: P(x)) IFF (FORALL x: NOT P(x))
+
+quant_6: LEMMA  (FORALL x: P(x)) AND (FORALL x: Q(x))
+                  IFF (FORALL x: P(x) AND Q(x))
+
+quant_7: LEMMA  (EXISTS x: P(x)) OR (EXISTS x: Q(x))
+                  IFF (EXISTS x: P(x) OR Q(x))
+
+
+l,m,n:  VAR int
+
+% Try a decision procedure here.
+
+distrib: LEMMA  l * (m + n) = (l * m) + (l * n)
+
+END pred_basic
+
+% Proof summary for theory pred_basic
+%     quant_0...............................proved - complete   [shostak](0.03 s)
+%     quant_1...............................proved - complete   [shostak](0.01 s)
+%     quant_2...............................proved - complete   [shostak](0.00 s)
+%     quant_3...............................proved - complete   [shostak](0.01 s)
+%     quant_4...............................proved - complete   [shostak](0.02 s)
+%     quant_5...............................proved - complete   [shostak](0.01 s)
+%     quant_6...............................proved - complete   [shostak](0.03 s)
+%     quant_7...............................proved - complete   [shostak](0.03 s)
+%     distrib...............................proved - complete   [shostak](0.03 s)
+%     Theory totals: 9 formulas, 9 attempted, 9 succeeded (0.18 s)

@@ -1,0 +1,13 @@
+ Proof summary for theory pred_basic
+    quant_0...............................proved - complete   [shostak](0.03 s)
+    quant_1...............................proved - complete   [shostak](0.01 s)
+    quant_2...............................proved - complete   [shostak](0.00 s)
+    quant_3...............................proved - complete   [shostak](0.01 s)
+    quant_4...............................proved - complete   [shostak](0.02 s)
+    quant_5...............................proved - complete   [shostak](0.01 s)
+    quant_6...............................proved - complete   [shostak](0.02 s)
+    quant_7...............................proved - complete   [shostak](0.02 s)
+    distrib...............................proved - complete   [shostak](0.04 s)
+    Theory totals: 9 formulas, 9 attempted, 9 succeeded (0.17 s)
+
+Grand Totals: 9 proofs, 9 attempted, 9 succeeded (0.17 s)

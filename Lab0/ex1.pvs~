@@ -1,0 +1,4 @@
+ex1: THEORY
+BEGIN
+f(x) = x + 1
+END ex1

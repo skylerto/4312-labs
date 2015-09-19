@@ -1,0 +1,11 @@
+(ex1
+ (trivial 0
+  (trivial-1 nil 3651515654
+   ("" (skosimp*) (("" (expand "f") (("" (assert) nil nil)) nil)) nil)
+   ((f const-decl "nat" ex1 nil)
+    (real_gt_is_strict_total_order name-judgement
+     "(strict_total_order?[real])" real_props nil)
+    (posint_plus_nnint_is_posint application-judgement "posint"
+     integers nil))
+   shostak)))
+

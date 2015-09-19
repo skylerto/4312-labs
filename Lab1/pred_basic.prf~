@@ -1,0 +1,79 @@
+(pred_basic
+ (quant_0 0
+  (quant_0-1 nil 3651515920
+   ("" (flatten) (("" (inst -1 "a") nil nil)) nil)
+   ((arb nonempty-type-decl nil pred_basic nil)
+    (a const-decl "arb" pred_basic nil))
+   shostak))
+ (quant_1 0
+  (quant_1-1 nil 3651516067
+   ("" (flatten)
+    (("" (inst -1 "a")
+      (("" (split) (("1" (propax) nil nil) ("2" (propax) nil nil))
+        nil))
+      nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)
+    (a const-decl "arb" pred_basic nil))
+   shostak))
+ (quant_2 0
+  (quant_2-1 nil 3651516115
+   ("" (flatten) (("" (inst -1 "a") (("" (inst 1 "a") nil nil)) nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)
+    (a const-decl "arb" pred_basic nil))
+   shostak))
+ (quant_3 0
+  (quant_3-1 nil 3651516168
+   ("" (flatten) (("" (skeep) (("" (inst 2 "x") nil nil)) nil)) nil)
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak))
+ (quant_4 0
+  (quant_4-1 nil 3651516274
+   ("" (split)
+    (("1" (prop) (("1" (skeep) (("1" (inst 2 "x") nil nil)) nil)) nil)
+     ("2" (flatten) (("2" (skeep) (("2" (inst -1 "x") nil nil)) nil))
+      nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak))
+ (quant_5 0
+  (quant_5-1 nil 3651516336
+   ("" (prop)
+    (("1" (skeep) (("1" (inst 1 "x") nil nil)) nil)
+     ("2" (skeep) (("2" (inst -1 "x") nil nil)) nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak))
+ (quant_6 0
+  (quant_6-1 nil 3651516386
+   ("" (prop)
+    (("1" (skeep)
+      (("1" (inst -1 "x")
+        (("1" (inst -2 "x")
+          (("1" (split) (("1" (propax) nil nil) ("2" (propax) nil nil))
+            nil))
+          nil))
+        nil))
+      nil)
+     ("2" (skeep) (("2" (inst -1 "x") (("2" (flatten) nil nil)) nil))
+      nil)
+     ("3" (skeep) (("3" (inst -1 "x") (("3" (assert) nil nil)) nil))
+      nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak))
+ (quant_7 0
+  (quant_7-1 nil 3651516475
+   ("" (prop)
+    (("1" (skeep) (("1" (inst 1 "x") (("1" (assert) nil nil)) nil))
+      nil)
+     ("2" (skeep) (("2" (inst 1 "x") (("2" (flatten) nil nil)) nil))
+      nil)
+     ("3" (skeep)
+      (("3" (inst 1 "x")
+        (("3" (inst 2 "x")
+          (("3" (split) (("1" (propax) nil nil) ("2" (propax) nil nil))
+            nil))
+          nil))
+        nil))
+      nil))
+    nil)
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak)))
+
