@@ -1,0 +1,27 @@
+majority_vote: THEORY
+BEGIN
+
+	% SPECIFICATION
+	a,b,c,z,d,h,e,f,g: VAR bool
+	i,j,k,l: bool
+	% Conversion Function
+	cnf(x:bool): int = (if x then 1 else 0 endif)
+	% Specify the required behaviour
+	spec(a,b,c,z): bool = (z = (cnf(a) + cnf(b) + cnf(c) >= 2))
+
+	sanifty_check_1: THEOREM (FORALL d: cnf(d) = 0 OR cnf(d) = 1)
+
+	% IMPLEMENTATION
+	% define and_gate
+	and_gate(v,w,x:bool): bool = x IFF (v AND w)
+	
+	% define or_gate
+	or_gate(v,w,x:bool): bool = x IFF (v OR w)
+
+
+	% describe the implementation in terms of 'and' and 'or' gates
+	impl(a,b,c,z): bool = (EXISTS d,e,f,g,h: (and_gate(a,b,d) AND and_gate(b,c,e) AND or_gate(d,e,g) AND and_gate(c,a,f) AND or_gate(g,f,z)))
+
+	Implementation_correctness: THEOREM impl(a,b,c,z) => spec(a,b,c,z)
+
+END majority_vote

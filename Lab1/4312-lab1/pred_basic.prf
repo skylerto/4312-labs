@@ -75,5 +75,15 @@
         nil))
       nil))
     nil)
-   ((arb nonempty-type-decl nil pred_basic nil)) shostak)))
+   ((arb nonempty-type-decl nil pred_basic nil)) shostak))
+ (distrib 0
+          (distrib-1 nil 3651516532
+           ("" (skeep) (("" (assert) nil nil)) nil)
+           ((int_plus_int_is_int application-judgement "int" integers
+             nil)
+            (mult_divides2 application-judgement "(divides(m))" divides
+             nil)
+            (mult_divides1 application-judgement "(divides(n))" divides
+             nil))
+           shostak)))
 

@@ -1,0 +1,7 @@
+% Exercises for Lab1
+% proveit --iimportchain --clean top.pvs
+top: THEORY
+BEGIN
+	IMPORTING pred_basic
+	IMPORTING majority_vote
+END top
