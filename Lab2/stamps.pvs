@@ -1,0 +1,57 @@
+stamps : Theory
+% From WIFT-95
+% The theory stamps below contains the formula (conjecture stamps)
+% asserting that any postage requirement of
+% 8 cents or more can be met solely with 3 and 5 cent stamps,
+% i.e., is the sum of some multiple
+% of 3 and some multiple of 5.
+% (1) Prove conjecture stamps1 by induction.
+% (2) There is also a recursive function stampf (that can easily be implemented in code)
+% that computes a tuple (t,f) for each i. Prove conjecture stamp_recurs using
+% stampf to instantiate t and f (without induction).
+% Hint: you can use (assert) effectively once the proofs are started.
+ BEGIN
+  i, t, f: VAR nat
+
+  %First typecheck and then ensure that all TCCs are proved
+
+  stamps : CONJECTURE
+    (FORALL i: (EXISTS t, f: i + 8 =  3 * t + 5 * f))
+
+   % Hint for the above: use case spliting i.e. (case "f=0"). See below for more. 
+
+% Hint for the above: In abstract terms, the proof proceeds by induction on i. In the base case, when i is 0,
+% the left-hand side is 8. Letting m and n both be 1 fulfills the equality. In the induction case,
+% we know that that i + 8 can be expressed as 3*M + 5*N for some M and N and we need
+% to find m and n such that i + 8 + 1 is 3*m + 5*n. If N = 0, then M is at least 3. We then
+% let m be M - 3 and n be 2, i.e., we remove three 3 cent stamps and add two 5 cent stamps
+% to get postage worth i + 8 + 1. If N > 0, then we simply remove a 5 cent stamp and add
+% two 3 cent stamps to prove the induction conclusion.
+
+ % Now lets do the proof using recursion
+ stampf (i : nat) : RECURSIVE { x : [nat, nat] | i+8 = 3 * x`1 + 5 * x`2 } =
+   IF i = 0 THEN (1,1)
+   ELSE LET (t,f) = stampf(i-1) IN
+        IF f = 0 THEN (t-3,f+2)
+                 ELSE (t+2,f-1)
+        ENDIF
+   ENDIF
+   MEASURE i
+
+ stamps_recurs : LEMMA
+    (FORALL i: (EXISTS t, f: i + 8 =  3 * t + 5 * f))
+
+END stamps
+
+% At the end you must have: (with C-c C-p f, i.e. prove file)
+% Proof summary for theory stamps
+%     stamps................................proved - complete   [shostak](0.19 s)
+%     stampf_TCC1...........................proved - complete   [shostak](0.00 s)
+%     stampf_TCC2...........................proved - complete   [shostak](0.07 s)
+%     stampf_TCC3...........................proved - complete   [shostak](0.11 s)
+%     stampf_TCC4...........................proved - complete   [shostak](0.06 s)
+%     stampf_TCC5...........................proved - complete   [shostak](0.12 s)
+%     stampf_TCC6...........................proved - complete   [shostak](0.01 s)
+%     stampf_TCC7...........................proved - complete   [shostak](0.00 s)
+%     stamps_recurs.........................proved - complete   [shostak](0.05 s)
+%     Theory totals: 9 formulas, 9 attempted, 9 succeeded (0.62 s)
