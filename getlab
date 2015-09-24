@@ -1,0 +1,4 @@
+#! /bin/bash
+labNum=$1
+echo "Retrieving lab "$labNum
+~sel/retrieve/4312/lab$labNum
