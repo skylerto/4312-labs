@@ -1,0 +1,39 @@
+alarm: THEORY
+% In the following do NOT use (grind) or (bash)
+% You may use any other basic rules.
+% Some conjectures may or may not be theorems.
+% You must prove all the conjectures that are theorems.
+% Translate informal statements into predicate logic for conjecture 4
+BEGIN
+  T: TYPE+                      % Arbitrary nonempty type
+  x,y: VAR T                    % dummy variables of type T
+  P: [T,T -> bool]              % Predicate in type T x T
+
+  conjecture1: CONJECTURE
+    (EXISTS x: (FORALL y: P(x,y))) => (FORALL y: (EXISTS x: P(x,y)))
+
+  conjecture2: CONJECTURE
+    (FORALL x: (EXISTS y: P(x,y))) => (EXISTS y: (FORALL x: P(x,y)))
+    
+  ALARM: TYPE = {electrical, mechanical, biological, chemical}
+  a: VAR ALARM
+  
+  EXPERT: TYPE = {Jack, Pam}
+  e: VAR EXPERT
+  % Note: Jack?(e) asserts that "e = Jack"
+
+  handles (e,a): bool % Expert e is qualified to handle alarm a
+  axm1: AXIOM handles (Jack,electrical) AND handles (Jack, mechanical)
+  axm2: AXIOM (FORALL a: handles (Pam, a))
+
+  % There is an alarm that can be handled by all experts
+  conjecture3: CONJECTURE EXISTS a: (FORALL e: handles(e,a))
+
+  % If there is an alarm that can be handled by all experts
+  % then all experts have an alarm that they can handle
+  % Translate into a predicate and prove, if possible
+  conjecture4: CONJECTURE FALSE
+
+END alarm
+
+

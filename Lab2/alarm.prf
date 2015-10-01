@@ -1,0 +1,24 @@
+(alarm
+ (conjecture1 0
+  (conjecture1-1 nil 3652380458
+   ("" (flatten)
+    (("" (skeep)
+      (("" (skeep) (("" (inst -1 "y") (("" (inst 1 "x") nil nil)) nil))
+        nil))
+      nil))
+    nil)
+   ((T nonempty-type-decl nil alarm nil)) shostak))
+ (conjecture2 0
+  (conjecture2-1 nil 3652380338
+   ("" (flatten)
+    (("" (assert)
+      (("" (use conjecture1)
+        (("" (prop)
+          (("1" (assert) (("1" (postpone) nil nil)) nil)
+           ("2" (postpone) nil nil))
+          nil))
+        nil))
+      nil))
+    nil)
+   nil shostak)))
+

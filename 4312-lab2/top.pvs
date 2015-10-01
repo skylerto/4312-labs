@@ -1,0 +1,8 @@
+% Exercises for Lab2
+% proveit --importchain --clean top.pvs
+top : THEORY
+BEGIN
+   IMPORTING alarm
+   IMPORTING signum
+   IMPORTING stamps
+END top

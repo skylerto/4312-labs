@@ -1,0 +1,37 @@
+(alarm
+ (conjecture1 0
+  (conjecture1-1 nil 3652263404
+   ("" (flatten)
+    (("" (skeep)
+      (("" (skolem -1 "x")
+        (("" (inst -1 "y") (("" (inst 1 "x") nil nil)) nil)) nil))
+      nil))
+    nil)
+   ((T nonempty-type-decl nil alarm nil)) shostak))
+ (conjecture2 0
+  (conjecture2-1 nil 3652263562
+   ("" (flatten) (("" (assert) (("" (postpone) nil nil)) nil)) nil) nil
+   shostak))
+ (conjecture3 0
+  (conjecture3-1 nil 3652263863
+   ("" (inst 1 "electrical")
+    (("" (skeep)
+      (("" (grind)
+        (("" (use axm2)
+          (("" (assert)
+            (("" (use axm1) (("" (prop) (("" (assert) nil nil)) nil))
+              nil))
+            nil))
+          nil))
+        nil))
+      nil))
+    nil)
+   ((axm2 formula-decl nil alarm nil) (axm1 formula-decl nil alarm nil)
+    (electrical adt-constructor-decl "(electrical?)" alarm nil)
+    (electrical? adt-recognizer-decl "[ALARM -> boolean]" alarm nil)
+    (boolean nonempty-type-decl nil booleans nil)
+    (ALARM type-decl nil alarm nil))
+   shostak))
+ (conjecture4 0
+  (conjecture4-1 nil 3652264362 ("" (postpone) nil nil) nil shostak)))
+
