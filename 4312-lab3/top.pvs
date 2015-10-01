@@ -1,0 +1,5 @@
+top: THEORY
+BEGIN
+  IMPORTING date
+  IMPORTING power
+END top

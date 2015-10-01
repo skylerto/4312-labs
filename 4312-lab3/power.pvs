@@ -1,0 +1,32 @@
+power: THEORY
+BEGIN
+  x: VAR real
+  % Function Tables Using TABLE
+  g(x): real = TABLE
+    %---------------%
+    |[	x<0  | x>=0 ]|
+    %---------------%
+    |   x   |  2*x ||
+    %---------------%
+  ENDTABLE
+
+
+  h(x): real = TABLE
+    %---------------%
+    |[	x<0  | x>=0 ]|
+    %---------------%
+    |   x   |  x+x ||
+    %---------------%
+  ENDTABLE
+
+  same : THEOREM FORALL (x:real): g(x)=h(x)
+
+  %Note how we deal with the previous instant
+  PwrCond(Prev:bool, Power, Kin, Kout:posreal):bool = TABLE
+    %-----------------------------------------------------------%
+    |[	Power<=Kout  | Power > Kout & Power < Kin| Power >= Kin	]|
+    %-----------------------------------------------------------%
+    |     TRUE      |             Prev          |     FALSE    ||
+    %-----------------------------------------------------------%
+  ENDTABLE
+END power
