@@ -9,7 +9,11 @@ BEGIN
   x = 10 OR x = 12}
   MONTH30: set[MONTH] = {x: nat | x = 4 OR x = 6 OR x = 9 OR x = 11}
 
-  leapyr(y: YEAR): bool = mod(y,4) = 0 AND NOT member(mod(y,400), LEAP)
+  MONTH: CONJECTURE FORALL (x: MONTH): x >= 1 AND x <= 12
+  MONTH30_31: CONJECTURE FORALL (x: MONTH): MONTH30(x) OR MONTH31(x) OR x = 2
+
+  Leapyr(y: YEAR): bool = mod(y,4) = 0 AND NOT member(mod(y,400), LEAP)
+  
 
   %input variables (undetermined constants)
   y: YEAR
@@ -25,10 +29,10 @@ BEGIN
     MONTH31(m) -> valid = True AND err = 0,
     MONTH30(m) AND d <= 30 -> valid = True AND err = 0,
     MONTH30(m) AND d > 30 -> valid = False AND err = 1,
-    m = 2 AND leapyr(y) AND d <= 29 -> valid = True AND err = 0,
-    m = 2 AND leapyr(y) AND d > 29 -> valid = False AND err = 2,
-    m = 2 AND NOT leapyr(y) AND d <= 28 -> valid = True AND err = 0,
-    m = 2 AND NOT leapyr(y) AND d > 28 -> valid = False AND err = 3
+    m = 2 AND Leapyr(y) AND d <= 29 -> valid = True AND err = 0,
+    m = 2 AND Leapyr(y) AND d > 29 -> valid = False AND err = 2,
+    m = 2 AND NOT Leapyr(y) AND d <= 28 -> valid = True AND err = 0,
+    m = 2 AND NOT Leapyr(y) AND d > 28 -> valid = False AND err = 3
   ENDCOND
 
   date_validity_check1: CONJECTURE date_valid => NOT (valid = True AND err > 0)
