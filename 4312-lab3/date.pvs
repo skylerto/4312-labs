@@ -20,14 +20,17 @@ BEGIN
   valid: bool
   err: nat
 
-  date_vaild: bool =
+  date_valid: bool =
   COND
-    MONTH31(m) -> valid = TRUE AND err = 0,
-    MONTH30(m) AND d <= 30 -> valid = TRUE AND err = 0,
-    MONTH30(m) AND d > 30 -> valid = FALSE AND err = 1,
-    m = 2 AND  
+    MONTH31(m) -> valid = True AND err = 0,
+    MONTH30(m) AND d <= 30 -> valid = True AND err = 0,
+    MONTH30(m) AND d > 30 -> valid = False AND err = 1,
+    m = 2 AND leapyr(y) AND d <= 29 -> valid = True AND err = 0,
+    m = 2 AND leapyr(y) AND d > 29 -> valid = False AND err = 2,
+    m = 2 AND NOT leapyr(y) AND d <= 28 -> valid = True AND err = 0,
+    m = 2 AND NOT leapyr(y) AND d > 28 -> valid = False AND err = 3
   ENDCOND
 
-  date_validity_check1: CONJECTURE date_valid => NOT (valid = TRUE AND err > 0)
+  date_validity_check1: CONJECTURE date_valid => NOT (valid = True AND err > 0)
   date_validity_check2: CONJECTURE date_valid => (0 <= err AND err <= 3)
 END date

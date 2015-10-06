@@ -1,0 +1,66 @@
+(date
+ (MONTH30_TCC1 0
+  (MONTH30_TCC1-1 nil 3652984619 ("" (subtype-tcc) nil nil) nil nil))
+ (y_TCC1 0
+  (y_TCC1-1 nil 3652984619 ("" (existence-tcc) nil nil) nil nil))
+ (m_TCC1 0
+  (m_TCC1-1 nil 3652984619 ("" (existence-tcc) nil nil) nil nil))
+ (d_TCC1 0
+  (d_TCC1-1 nil 3652984619 ("" (existence-tcc) nil nil) nil nil))
+ (date_valid_TCC1 0
+  (date_valid_TCC1-1 nil 3652984619 ("" (cond-disjoint-tcc) nil nil)
+   ((real_le_is_total_order name-judgement "(total_order?[real])"
+     real_props nil)
+    (posrat_div_posrat_is_posrat application-judgement "posrat"
+     rationals nil)
+    (nonneg_floor_is_nat application-judgement "nat" floor_ceil nil)
+    (mult_divides2 application-judgement "(divides(m))" divides nil)
+    (mult_divides1 application-judgement "(divides(n))" divides nil)
+    (even_times_int_is_even application-judgement "even_int" integers
+     nil)
+    (nnint_times_nnint_is_nnint application-judgement "nonneg_int"
+     integers nil)
+    (int_minus_int_is_int application-judgement "int" integers nil)
+    (nil application-judgement "below(m)" mod nil)
+    (mod const-decl "{k | abs(k) < abs(j)}" mod nil)
+    (LEAP const-decl "set[nat]" date nil)
+    (member const-decl "bool" sets nil)
+    (leapyr const-decl "bool" date nil)
+    (real_gt_is_strict_total_order name-judgement
+     "(strict_total_order?[real])" real_props nil)
+    (MONTH30 const-decl "set[MONTH]" date nil)
+    (MONTH31 const-decl "set[MONTH]" date nil))
+   nil))
+ (date_valid_TCC2 0
+  (date_valid_TCC2-1 nil 3652984619 ("" (cond-coverage-tcc) nil nil)
+   ((MONTH30 const-decl "set[MONTH]" date nil)
+    (mod const-decl "{k | abs(k) < abs(j)}" mod nil)
+    (LEAP const-decl "set[nat]" date nil)
+    (member const-decl "bool" sets nil)
+    (leapyr const-decl "bool" date nil)
+    (posrat_div_posrat_is_posrat application-judgement "posrat"
+     rationals nil)
+    (nonneg_floor_is_nat application-judgement "nat" floor_ceil nil)
+    (mult_divides2 application-judgement "(divides(m))" divides nil)
+    (mult_divides1 application-judgement "(divides(n))" divides nil)
+    (even_times_int_is_even application-judgement "even_int" integers
+     nil)
+    (nnint_times_nnint_is_nnint application-judgement "nonneg_int"
+     integers nil)
+    (int_minus_int_is_int application-judgement "int" integers nil)
+    (nil application-judgement "below(m)" mod nil)
+    (MONTH31 const-decl "set[MONTH]" date nil)
+    (real_gt_is_strict_total_order name-judgement
+     "(strict_total_order?[real])" real_props nil)
+    (real_le_is_total_order name-judgement "(total_order?[real])"
+     real_props nil))
+   nil))
+ (date_validity_check1 0
+  (date_validity_check1-1 nil 3652984697
+   ("" (flatten)
+    (("" (expand "date_valid") (("" (assert) nil nil)) nil)) nil)
+   ((date_valid const-decl "bool" date nil)
+    (real_gt_is_strict_total_order name-judgement
+     "(strict_total_order?[real])" real_props nil))
+   shostak)))
+
