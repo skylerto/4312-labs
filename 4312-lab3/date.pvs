@@ -7,7 +7,7 @@ BEGIN
   LEAP: set[nat] = {x: nat | x = 100 OR x = 200 OR x = 300}
   MONTH31: set[MONTH] = {x: MONTH | x = 1 OR x = 3 OR x = 5 OR x = 7 OR x = 8 OR
   x = 10 OR x = 12}
-  MONTH30: set[MONTH] = {x: nat | x = 4 OR x = 6 OR x = 9 OR x = 11}
+  MONTH30: set[MONTH] = {x: MONTH | x = 4 OR x = 6 OR x = 9 OR x = 11}
 
   MONTH: CONJECTURE FORALL (x: MONTH): x >= 1 AND x <= 12
   MONTH30_31: CONJECTURE FORALL (x: MONTH): MONTH30(x) OR MONTH31(x) OR x = 2
@@ -35,6 +35,6 @@ BEGIN
     m = 2 AND NOT Leapyr(y) AND d > 28 -> valid = False AND err = 3
   ENDCOND
 
-  date_validity_check1: CONJECTURE date_valid => NOT (valid = True AND err > 0)
+  Date_validity_check1: CONJECTURE date_valid => NOT (valid = True AND err > 0)
   date_validity_check2: CONJECTURE date_valid => (0 <= err AND err <= 3)
 END date
