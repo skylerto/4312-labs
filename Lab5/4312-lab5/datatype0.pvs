@@ -116,9 +116,9 @@ END COLOR2
      COND
        y = 0 -> fail,
        ELSE -> ok(x/y)
-     ENDCOND
+   ENDCOND
 
-   check7: CONJECTURE
+check7: CONJECTURE
      safe_div(2,0) = fail AND safe_div(6,3) = ok(2)
 
   Maybe[T:TYPE] : DATATYPE
