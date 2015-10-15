@@ -21,8 +21,9 @@ BEGIN
 
   same : THEOREM FORALL (x:real): g(x)=h(x)
 
+  provided(i: bool): TYPE = {p: posreal | i} 
   %Note how we deal with the previous instant
-  PwrCond(Prev:bool, Power, Kin, Kout:posreal):bool = TABLE
+  PwrCond(Prev:bool, Power, Kin, Kout:posreal)(p: provided(Kin > Kout)):bool = TABLE
     %-----------------------------------------------------------%
     |[	Power<=Kout  | Power > Kout & Power < Kin| Power >= Kin	]|
     %-----------------------------------------------------------%

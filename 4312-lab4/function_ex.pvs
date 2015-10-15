@@ -1,0 +1,20 @@
+function_ex : THEORY
+BEGIN
+    n: posnat
+    DOMAIN: TYPE = {d : posnat | d <= n }
+    d: VAR DOMAIN
+    RANGE: TYPE = {a,b,c}
+
+    % This function is the same as f1 below
+    f: [DOMAIN -> RANGE] = (LAMBDA d: (IF d = 1 then a ELSE c ENDIF))
+
+    f1(d): RANGE = (IF d = 1 then a ELSE c ENDIF)
+
+    % A slightly different function
+    f2(d): RANGE = (IF d = 1 then a ELSIF d = 2 THEN b ELSE c ENDIF)
+
+    % n >= 2 needed for type correctness
+    % First try without the antecedent to see what happens
+    Check1: CONJECTURE n >= 2 IMPLIES f2 = (f1 WITH[ 2:=b])
+
+END function_ex

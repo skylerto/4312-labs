@@ -1,0 +1,21 @@
+set_ex : THEORY
+       %% Using the theory set[T] from the prelude
+       %% set[T] is the same as setof[T]
+BEGIN
+	RESOURCE: TYPE = {r1, r2, r3, r4}
+
+	UNIVERSE: set[RESOURCE] = {r: RESOURCE | True}
+	SET1: set[RESOURCE] = {r: RESOURCE | r = r1 OR r = r2}
+	SET2: set[RESOURCE] = {r: RESOURCE | r = r3 OR r = r4}
+	SET3: set[RESOURCE] = {r: RESOURCE | r = r1 OR r = r2 OR r = r3}
+	
+    conj1: CONJECTURE member(r1, SET1)
+    conj2: CONJECTURE SET1(r1)
+    conj3: CONJECTURE add(r4, SET3) = UNIVERSE
+    conj4: CONJECTURE remove(r3, SET3) = SET1
+    conj5: CONJECTURE UNIVERSE = union(SET1, SET2)
+conj6: CONJECTURE intersection(SET1, SET2) = emptyset
+conj7: CONJECTURE intersection(SET2, SET3) = singleton(r3)
+conj8: CONJECTURE remove(r3, add(r3, SET1)) = SET1
+
+END set_ex

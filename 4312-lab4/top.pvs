@@ -1,0 +1,8 @@
+% Exercise files for Lab 4
+% proveit --importchain --clean top.pvs
+top : THEORY
+BEGIN
+	IMPORTING set_ex	% Set Exercises
+	IMPORTING function_ex	% Function Exercises
+	IMPORTING phone		% Phone Specification
+END top
