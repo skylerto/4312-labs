@@ -1,0 +1,130 @@
+% In most cases, (grind) will prove the conjectures
+% However, do the proofs without (grind)
+
+datatype0 : THEORY
+BEGIN
+
+% bool, int, real etc. are base datatypes
+% Tuples and records allow us to create new product datatypes
+% DATATYPE allows to create new sum datatypes (sometimes called variant types)
+
+% Enumeration Types
+  COLOR1: TYPE = {red, white, blue}
+
+  c1: VAR COLOR1
+  P1(c1): bool =
+    (c1 = red OR c1 = white)
+    
+  check1: CONJECTURE
+    P1(c1) => c1 /=blue
+
+%|- check1 : PROOF
+%|- (spread (induct "c1")
+%|-  ((assert) (assert)
+%|-   (then (flatten) (simplify -1) (expand "P1") (propax))))
+%|- QED
+    
+% The above enumeration of COLOR2 is the same as
+  COLOR2: DATATYPE
+    BEGIN
+      red   : redr?
+      white : whiter?
+      blue  : bluer?
+END COLOR2
+
+% Think of red, white and blue as constuctors
+% and red? etc as recognizers
+
+  c2: VAR COLOR1
+  P2(c2): bool =
+    (c2 = red OR c2 = white)
+    
+  check2: CONJECTURE
+    P2(c2) => c2 /= blue
+
+%|- check2 : PROOF
+%|- (then (skeep) (expand "P2") (assert))
+%|- QED
+
+  check3: CONJECTURE
+    redr?(red) AND NOT redr?(blue)
+
+%|- check3 : PROOF
+%|- (then (simplify) (propax))
+%|- QED
+
+% Each Alegbraic Datatype allows a construct for definition by cases
+  P3(c2): nat =
+    CASES c2 OF 
+      red: 1,
+      white: 2,
+      blue: 3
+    ENDCASES
+
+  check4: CONJECTURE
+    P3(red) + P3(white) >= P3(blue)
+
+%|- check4 : PROOF
+%|- (then (expand "P3") (assert))
+%|- QED
+
+% Beyond Enumerations
+
+  BUTTON_STATE: TYPE = {on, off}
+
+  BUTTON_ACTION: DATATYPE
+    BEGIN
+      nothing: nothing?
+      press(bs: BUTTON_STATE): press?
+    END BUTTON_ACTION 
+  % There is an injection function 
+  % 'press': [BUTTON_STATE -> {press(on), press(off)}]
+  %  where BUTTON_ACTION =  {nothing, press(on), press(off)}
+
+  cmd: VAR BUTTON_ACTION
+  check5: CONJECTURE
+    cmd = press(on) => press?(cmd)
+
+%|- check5 : PROOF
+%|- (then (skeep) (replace -1 1) (assert))
+%|- QED
+
+
+% Here is one case where (grind) won't work
+  check6: CONJECTURE
+    press?(cmd) => cmd=press(on) OR cmd=press(off)
+
+%|- check6 : PROOF
+%|- (spread (induct "cmd") ((prop) (then (skeep) (assert))))
+%|- QED
+
+% Alternatively, use eta
+% ;;; Proof check_6 for formula stack_soln.check4
+% ;;; developed with shostak decision procedures
+% ("" (skeep) (eta "(press?)") (inst -1 "cmd") (grind))
+% eta simplifies to: press(bs(cmd)) = cmd
+
+
+ %% Maybe Types as in Haskell
+  Failable_Real: DATATYPE
+     BEGIN
+       fail: fail?
+       ok(r:real): ok?
+     END Failable_Real
+
+  safe_div(x:real,y:real):  Failable_Real =
+     COND
+       y = 0 -> fail,
+       ELSE -> ok(x/y)
+     ENDCOND
+
+   check7: CONJECTURE
+     safe_div(2,0) = fail AND safe_div(6,3) = ok(2)
+
+  Maybe[T:TYPE] : DATATYPE
+    BEGIN
+      None : none?
+      Some(some:T): some?
+    END Maybe
+      
+END datatype0

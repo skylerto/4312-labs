@@ -1,0 +1,106 @@
+%% This file is incomplete
+%% Complete wherever it says "Fill in here"
+%% Prove all the conjectures
+
+% In COND statements, you may not use ELSE
+% as we want explicit conditions
+% You must prove use_case1 without (grind)
+
+SmallBank2[delta:posreal]: THEORY
+BEGIN
+  IMPORTING Time[delta]
+  i: VAR DTIME
+
+  STATUS   : TYPE = {ok, er1, er2}
+
+% Inputs
+  v: real
+
+  COMMAND: DATATYPE
+    BEGIN
+      nothing           : nothing?
+      deposit  (x:real) : deposit?
+      withdraw (x:real) : withdraw?
+    END COMMAND
+
+  cmd: [DTIME -> COMMAND]
+
+% Outputs using records
+
+  STATE: TYPE = [# b: real
+                 , d: real
+                 , w: real
+                 , r: STATUS
+                #]
+
+  st: [DTIME -> STATE]
+
+
+  init_state: STATE =
+    (# b := 0, d := 0, w:=0, r := ok #)
+    
+% Queries (do not use ELSE in COND)
+
+  deposit_ft(x: real)(i:POS_DTIME): bool =
+    COND
+      x > 0 -> st(i) = st(i-1) WITH [ b := b_ + x
+                                     ,d := d_ + x
+                                     ,r := ok
+                                    ],
+      x <= 0  -> st(i) = st(i-1) WITH [r := er1]
+    ENDCOND
+      WHERE  b_ = st(i-1)`b
+            ,d_ = st(i-1)`d
+
+  withdraw_ft(x: real)(i:POS_DTIME): bool =
+    %% Fill in here
+
+% Response Function Table
+  bank_ft (i): bool =
+    COND 
+      i = 0 ->  st(0) = init_state,
+      i > 0 -> 
+        CASES cmd(i) OF
+          nothing    : st(i) = st(i-1),
+          deposit(v) : deposit_ft(v)(i),
+          withdraw(v): withdraw_ft(v)(i)
+        ENDCASES
+    ENDCOND
+
+% Invariants
+  invariant1(i:DTIME): bool =
+    0 <= st(i)`b 
+
+  invariant2(i:DTIME): bool =
+      %% Fill in here same invariant as SmallBank.pvs
+      %% adapted for records
+
+  bank_invariant1 : CONJECTURE 
+        (FORALL i: bank_ft(i) ) 
+      =>
+        FORALL i : invariant1(i)
+
+  bank_invariant2 : CONJECTURE 
+        (FORALL i: bank_ft(i)) 
+      =>
+        FORALL i : invariant2(i) 
+
+
+% Proof this without grind
+  use_case1: CONJECTURE
+          i > 0
+      AND st(i)`b = 10.25
+      AND bank_ft(i+1)
+      AND bank_ft(i+2)
+      AND cmd(i+1) = deposit (4.75)
+      AND cmd(i+2) = withdraw(10.00)
+      => 
+          st(i+2)`b = 5.00
+
+%%%
+  x,y: posreal
+
+  use_case2: CONJECTURE
+      %% Fill in here same invariant as SmallBank.pvs
+      %% adapted for records
+END SmallBank2

@@ -1,0 +1,132 @@
+%% This file is incomplete
+%% Complete wherever it says "Fill in here"
+%% Prove all the conjectures
+
+SmallBank[delta:posreal]: THEORY
+BEGIN
+  IMPORTING Time[delta]
+  i: VAR DTIME
+
+  STATUS   : TYPE = {ok, er1, er2}
+
+% Inputs
+  v: real
+
+  COMMAND: DATATYPE
+    BEGIN
+      nothing           : nothing?
+      deposit  (x:real) : deposit?
+      withdraw (x:real) : withdraw?
+    END COMMAND
+
+  cmd: [DTIME -> COMMAND]
+
+% Outputs
+  b:  [DTIME -> real]    % balance
+  d:  [DTIME -> real]    % total deposits
+  w:  [DTIME -> real]    % total withdraws
+  r:  [DTIME -> STATUS]  % report
+
+% Queries
+  deposit?(x: real)(i:POS_DTIME): bool =
+     b(i) = b(i-1) + x AND d(i) = d(i-1) + x 
+                       AND w(i) = w(i-1) 
+
+   withdraw?(x: real)(i:POS_DTIME): bool =
+     %% Fill in here
+
+  skip(i:POS_DTIME): bool =
+    b(i) = b(i-1) AND d(i) = d(i-1) 
+                  AND w(i) = w(i-1)
+
+  init: bool =
+    b(0) = 0 AND d(0) = 0 AND w(0) = 0
+    
+% Response Function Table
+  bank_ft (i): bool =
+    COND 
+      i = 0 ->  init AND r(0) = ok,
+      i > 0 -> 
+        %% Fill in here
+    ENDCOND
+
+% Invariants
+  invariant1(i:DTIME): bool =
+    0 <= b(i) 
+
+  invariant2(i:DTIME): bool =
+        0 <= b(i) 
+    AND 0 <= d(i)
+    AND 0 <= w(i)
+    AND d(i) - w(i) = b(i)
+
+  bank_invariant1 : CONJECTURE 
+        (FORALL i: bank_ft(i) ) 
+      =>
+        FORALL i : invariant1(i) 
+
+
+  bank_invariant2 : CONJECTURE 
+        (FORALL i: bank_ft(i)) 
+      =>
+        FORALL i : invariant2(i) 
+
+
+  use_case1_v1: CONJECTURE
+          i > 0
+      AND b(i) = 10.25
+      AND bank_ft(i+1)
+      AND bank_ft(i+2)
+      AND cmd(i+1) = deposit (4.75)
+      AND cmd(i+2) = withdraw(10.00)
+      => 
+          b(i+2) = 5.00
+
+  x,y: posreal
+
+  use_case1_v2: CONJECTURE
+          i > 0
+      AND %% Fill in here
+      AND bank_ft(i+1)
+      AND bank_ft(i+2)
+      AND cmd(i+1) = deposit (x)
+      AND cmd(i+2) = withdraw(y)
+      => 
+          b(i+2) = b(i) + x - y 
+      AND d(i+2) = d(i) + x
+      AND w(i+2) = w(i) + y
+
+
+END SmallBank
+
+% - Change Context	  :   M-x cc
+% - New PVS File 	  :   M-x nf
+% - Find PVS File	  :   M-x ff
+% - Type-Check-Prove   	  :   M-x tcp
+% - Show TCCs		  :   M-x tccs
+% - Prove        	  :   C-c p
+% - Prove whole file      :   C-c C-p f
+% - Status of proof	  :   M-x spt
+% - Exit from proof panel :   C-x o, C-x 1
+% - Show skolem constants :   M-x show-skolem-constants
+% - Comment region        :   C-c ;
+% - Uncomment region      :   M-x uncomment-region
+% - show hidden formulas  :   M-x show-hidden-formulas
+
+% - Proof Commands
+%       * (prop)
+% 	* (case "b")   		% b is a boolean condition
+% 	* (induct "i") 		% i is a structured instance
+% 	* (skolem 1 "a_") % skolemize with name 'a_'
+% 	* (skeep)	   	    % skolemize with same variable names
+% 	* (inst 1 "exp")	% instantiation 
+% 	* (expand)
+% 	* (flatten)
+% 	* (assert)
+% 	* (simplify)
+% 	* (typepred "t")
+% 	* (rewrite -2)
+% 	* (replace -1 1 rl)
+% 	* (lemma lemma_name ("var1" "val1" "var2" "val2"))
+% 	* (generalize -1 "i")
+% 	* (name "..." "...")
