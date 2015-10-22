@@ -53,6 +53,18 @@ BEGIN
             ,d_ = st(i-1)`d
 
   withdraw_ft(x: real)(i:POS_DTIME): bool =
+  	COND
+		(x > 0 AND b_ - x >= 0) -> st(i) = st(i-1) WITH [b := b_ - x
+		      	       	 	      ,w := w_ + x
+					      ,r := ok
+					      ],
+		NOT (x > 0 AND b_ - x >= 0) ->
+		COND
+			x <= 0 -> st(i) = st(i-1) WITH [r := er1],
+			(x > 0 AND b_ - x < 0) -> st(i) = st(i-1) WITH [r := er2]
+		ENDCOND
+	ENDCOND
+	WHERE b_ = st(i-1)`b, w_ = st(i-1)`w
     %% Fill in here
 
 % Response Function Table
@@ -74,7 +86,11 @@ BEGIN
   invariant2(i:DTIME): bool =
       %% Fill in here same invariant as SmallBank.pvs
       %% adapted for records
-
+        0 <= st(i)`b
+    AND 0 <= st(i)`d
+    AND 0 <= st(i)`w
+    AND st(i)`d - st(i)`w = st(i)`b
+    
   bank_invariant1 : CONJECTURE 
         (FORALL i: bank_ft(i) ) 
       =>
@@ -103,4 +119,15 @@ BEGIN
   use_case2: CONJECTURE
       %% Fill in here same invariant as SmallBank.pvs
       %% adapted for records
+                i > 0
+      AND st(i)`b = x + y
+      AND bank_ft(i+1)
+      AND bank_ft(i+2)
+      AND cmd(i+1) = deposit (x)
+      AND cmd(i+2) = withdraw(y)
+      =>
+          st(i+2)`b = st(i)`b + x - y
+      AND st(i+2)`d = st(i)`d + x
+      AND st(i+2)`w = st(i)`w + y
+      
 END SmallBank2

@@ -1,0 +1,79 @@
+(datatype0
+ (check1 0
+  (check1-1 nil 3654454025
+   ("" (induct "c1")
+    (("1" (assert) nil nil) ("2" (assert) nil nil)
+     ("3" (flatten)
+      (("3" (simplify -1)
+        (("3" (expand "P1") (("3" (propax) nil nil)) nil)) nil))
+      nil))
+    nil)
+   ((COLOR1_induction formula-decl nil datatype0 nil)
+    (blue adt-constructor-decl "(blue?)" datatype0 nil)
+    (blue? adt-recognizer-decl "[COLOR1 -> boolean]" datatype0 nil)
+    (/= const-decl "boolean" notequal nil)
+    (P1 const-decl "bool" datatype0 nil)
+    (IMPLIES const-decl "[bool, bool -> bool]" booleans nil)
+    (bool nonempty-type-eq-decl nil booleans nil)
+    (boolean nonempty-type-decl nil booleans nil)
+    (COLOR1 type-decl nil datatype0 nil))
+   shostak))
+ (check2 0
+  (check2-1 nil 3654454082
+   ("" (skeep) (("" (expand "P2") (("" (assert) nil nil)) nil)) nil)
+   ((P2 const-decl "bool" datatype0 nil)) shostak))
+ (check3 0
+  (check3-1 nil 3654454110 ("" (simplify) (("" (propax) nil nil)) nil)
+   nil shostak))
+ (check4 0
+  (check4-1 nil 3654454125
+   ("" (expand "P3") (("" (assert) nil nil)) nil)
+   ((real_ge_is_total_order name-judgement "(total_order?[real])"
+     real_props nil)
+    (P3 const-decl "nat" datatype0 nil))
+   shostak))
+ (check5 0
+  (check5-1 nil 3654454155
+   ("" (skeep) (("" (replace -1 1) (("" (assert) nil nil)) nil)) nil)
+   nil shostak))
+ (check6 0
+  (check6-1 nil 3654454173
+   ("" (induct "cmd")
+    (("1" (prop) nil nil) ("2" (skeep) (("2" (assert) nil nil)) nil))
+    nil)
+   ((BUTTON_ACTION_induction formula-decl nil datatype0 nil)
+    (off adt-constructor-decl "(off?)" datatype0 nil)
+    (off? adt-recognizer-decl "[BUTTON_STATE -> boolean]" datatype0
+     nil)
+    (on adt-constructor-decl "(on?)" datatype0 nil)
+    (on? adt-recognizer-decl "[BUTTON_STATE -> boolean]" datatype0 nil)
+    (press adt-constructor-decl "[BUTTON_STATE -> (press?)]" datatype0
+     nil)
+    (BUTTON_STATE type-decl nil datatype0 nil)
+    (= const-decl "[T, T -> boolean]" equalities nil)
+    (OR const-decl "[bool, bool -> bool]" booleans nil)
+    (press? adt-recognizer-decl "[BUTTON_ACTION -> boolean]" datatype0
+     nil)
+    (IMPLIES const-decl "[bool, bool -> bool]" booleans nil)
+    (bool nonempty-type-eq-decl nil booleans nil)
+    (boolean nonempty-type-decl nil booleans nil)
+    (BUTTON_ACTION type-decl nil datatype0 nil))
+   shostak))
+ (safe_div_TCC1 0
+  (safe_div_TCC1-1 nil 3654454024 ("" (subtype-tcc) nil nil)
+   ((boolean nonempty-type-decl nil booleans nil)
+    (bool nonempty-type-eq-decl nil booleans nil)
+    (NOT const-decl "[bool -> bool]" booleans nil)
+    (number nonempty-type-decl nil numbers nil)
+    (number_field_pred const-decl "[number -> boolean]" number_fields
+     nil)
+    (number_field nonempty-type-from-decl nil number_fields nil)
+    (real_pred const-decl "[number_field -> boolean]" reals nil)
+    (real nonempty-type-from-decl nil reals nil)
+    (/= const-decl "boolean" notequal nil))
+   nil))
+ (check7 0
+  (check7-1 nil 3654454204
+   ("" (expand "safe_div") (("" (propax) nil nil)) nil)
+   ((safe_div const-decl "Failable_Real" datatype0 nil)) shostak)))
+

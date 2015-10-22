@@ -32,7 +32,7 @@ BEGIN
      b(i) = b(i-1) + x AND d(i) = d(i-1) + x 
                        AND w(i) = w(i-1) 
 
-   withdraw?(x: real)(i:POS_DTIME): bool =
+   withdraw?(x: real)(i:POS_DTIME): bool = b(i) = b(i-1) - x AND d(i) = d(i-1) AND w(i) = w(i-1) + x
      %% Fill in here
 
   skip(i:POS_DTIME): bool =
@@ -46,7 +46,23 @@ BEGIN
   bank_ft (i): bool =
     COND 
       i = 0 ->  init AND r(0) = ok,
-      i > 0 -> 
+      i > 0 ->
+      	CASES cmd(i) OF
+	     nothing : skip(i) AND r(i) = r(i-1),
+	     deposit(v):
+		COND
+			v > 0 -> deposit?(v)(i) AND r(i) = ok,
+	     		 ELSE -> skip(i)	AND r(i) = er1
+		ENDCOND,
+	     withdraw(v):
+		COND
+			v > 0 AND b(i-1) - v >= 0 -> withdraw?(v)(i) AND r(i) = ok,
+			NOT ( v > 0 AND b(i-1) - v >= 0)
+			-> COND v <= 0 -> skip(i) AND r(i) = er1,
+			   	b(i-1) - v < 0 -> skip(i) AND r(i) = er2
+			ENDCOND
+		ENDCOND
+	ENDCASES
         %% Fill in here
     ENDCOND
 
@@ -84,9 +100,9 @@ BEGIN
 
   x,y: posreal
 
-  use_case1_v2: CONJECTURE
+  use_case1_vc2: CONJECTURE
           i > 0
-      AND %% Fill in here
+      AND b(i) = x + y
       AND bank_ft(i+1)
       AND bank_ft(i+2)
       AND cmd(i+1) = deposit (x)
