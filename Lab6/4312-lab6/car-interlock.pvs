@@ -1,0 +1,53 @@
+%% Complete the specification of the control_ft function table
+%% so that the invaraint and use case can be proved
+%% You may add functions as required
+%% Prove all the conjectures i.e. validate the requirements
+
+car_interlock[delta:posreal]: THEORY
+BEGIN
+  importing Time[delta]
+  i: VAR DTIME
+  
+  SENSOR: TYPE   = {on, off}
+  ACTUATOR: TYPE = {stop, go}
+
+  x1, x2: [DTIME -> SENSOR]
+  y1, y2: [DTIME -> ACTUATOR]
+
+ 
+  control_ft(i): bool =
+    %% Complete This
+    %% Draw a function table first
+    %% Minimize the function table but ensure it is complete and disjoint
+
+  inv(i): bool =
+    NOT (y1(i) = go AND y2(i) = go)
+
+  inv_holds: CONJECTURE
+     (FORALL i: control_ft(i))
+    =>
+     (FORALL i: inv(i))
+
+  % Will not prove. Why?
+   % inv_holds2: CONJECTURE
+   %  control_ft(i) => inv(i)
+
+ % use case
+   assume: bool =
+         control_ft(0)
+     AND control_ft(1)
+     AND control_ft(2)
+     AND control_ft(3)
+     AND x1(1) = on AND x2(1) = on AND y2(0) = stop
+     AND x1(2) = off AND x2(2) = on
+     AND x1(3) = off AND x2(3) = on 
+
+   %% entrance car goes first, then exit car
+   use_case1: CONJECTURE
+      assume    
+     =>
+           y1(1) = go AND y2(1) = stop
+       AND y1(2) = stop AND y2(2) = stop
+       AND y1(3) = stop AND y2(3) = go
+
+END car_interlock
