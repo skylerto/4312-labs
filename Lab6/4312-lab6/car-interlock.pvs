@@ -15,12 +15,12 @@ BEGIN
   y1, y2: [DTIME -> ACTUATOR]
 
  
-  control_ft(i): bool =
+  control_ft_mine(i): bool =
     %% Complete This
     %% Draw a function table first
     %% Minimize the function table but ensure it is complete and disjoint
     COND
-	i <= 0 -> y1(i) = stop AND y2(i) = stop,
+	i = 0 -> y1(i) = stop AND y2(i) = stop,
 	i > 0 -> COND
 	      %% Car enters
 	      x1(i) = on AND x2(i) = on -> y1(i) = go AND y2(i) = stop,
@@ -32,6 +32,23 @@ BEGIN
 	      x1(i) = on AND x2(i) = off AND NOT (y1(i-1) = stop AND y2(i-1) = stop) -> y1(i) = stop AND y2(i) = stop
 	ENDCOND
     ENDCOND
+
+  control_ft(i): bool =
+    %% Complete This
+    %% Draw a function table first
+    %% Minimize the function table but ensure it is complete and disjoint
+    COND
+	i = 0 -> y1(i) = stop AND y2(i) = stop,
+	i > 0 -> COND
+	      %% Car enters
+	      x1(i) = on AND x2(i) = on -> y1(i) = go AND y2(i) = stop,
+	      NOT(x1(i) = on AND x2(i) = on) -> COND
+	      		x2(i) = on AND y1(i-1) = stop ->  y1(i) = stop AND y2(i) = go,
+			NOT(x2(i) = on AND y1(i-1) = stop) -> y1(i) = stop AND y2(i) = stop
+	      ENDCOND
+	ENDCOND
+    ENDCOND
+
 
   inv(i): bool =
     NOT (y1(i) = go AND y2(i) = go)
