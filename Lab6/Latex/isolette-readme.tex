@@ -1,0 +1,103 @@
+% !TEX encoding = UTF-8
+%Koma article
+\documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
+
+%Standard Pre-amble
+\input{sty/defns.tex}
+% Set the header
+\ihead[]{\small Isolette Specification: EECS4312 Assignment}
+\title{Isolette Specification:\\ EECS4312 Assignment}
+
+
+\date{\today} % Display a given date or no date
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+As stated in the course outline, you are required to read parts of  the Handbook \cite{REMH}  each week. In this assignment you will be constructing the function table for the Isolette described in \cite{REMH} (Appendix A). 
+
+The Handbook omits E/R-descriptions and function  tables. Hence, the main learning outcomes for this Assignment is to complete a precise requirements document for the Isolette by providing the E/R-descriptions and function tables. You must check the function tables with PVS for completeness, disjointness and safety.
+
+\textbf{What you must do}:
+
+\begin{mylist}
+\item Read this document and the  specification of the Isolette (in Appendix A of \cite{REMH}). We will be using only part of this Isolette requirements document \cite{REMH}. Also, there are some problems in \cite{REMH} which your are required to fix in your submission.
+\item Provide a precise requirements document for the Isolette by completing the LaTeX template (isolette-assign.tex) in the SVN (LaTex files provided).
+\item Complete the parts in the template \hl{highlighted in yellow}. By completing the provided template you will see the overall structure of a precise requirements documents. The final document you produce is \texttt{isolette-assign.pdf}.
+\item Before the due date, submit an electronic copy of \texttt{isolette-assign.pdf} and place a printed copy of the PDF in the drop box.
+\item You must also submit your PVS files and proofs in a folder \texttt{pvs}: submit 4312 assign isolette
+\end{mylist}
+
+\end{abstract}
+
+\section*{Revisions}
+\small
+%%%%%%%%%%%%Table of revisions%%%%%%%%
+\begin{tabular}{|l|l|p{4in}|}
+\hline
+Date & Revision& Description \\ 
+\hline
+22 October  2015 
+& 1.0       
+& Initial specification of Assignment: Isolette system\\ 
+\hline
+23 October 2015 & 2.0 & Revised E/R descriptions,  Alarm Off Hysteresis and Non-circular data-flow\\
+\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+\listoffigures
+\normalsize
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{ER-descriptions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{plain}
+\bibliography{ref}
+
+\appendix 
+
+\section{PVS Time theory for held-for operator}\label{sec:time}
+
+\begin{pvs}
+Time[delta: posreal]  : THEORY
+BEGIN
+  % digital time
+  DTIME : TYPE = nat
+  init(i : DTIME) : bool = i = 0 
+
+  % pseudo, digitized real time   
+  RTIME : TYPE = {t : nnreal | (EXISTS (i : DTIME) : t = i * delta)}
+
+  % actual time
+  TIME : TYPE = nnreal
+
+  % Positive DTIME
+  POS_DTIME: TYPE = posnat
+  
+  % conversions
+  r2d(t: RTIME): DTIME = t / delta
+  d2r(i: DTIME): RTIME = i * delta
+
+  DURATION: TYPE = nnreal
+  held_for(p: pred[DTIME], d: DURATION)(i:DTIME): bool =
+    (FORALL (j: DTIME): 
+    i - (d / delta) <= j AND j < i IMPLIES 0 <= j AND p(j))
+
+END Time
+\end{pvs}
+
+\section{Outline of a Precise Requirements Document}
+
+\begin{figure}[htbp]
+\begin{mdframed}
+\begin{center}
+\includegraphics[width=\textwidth]{pics/outline.png}
+\end{center}
+\end{mdframed}
+\end{figure}
+\end{document} 

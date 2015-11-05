@@ -19,11 +19,24 @@ BEGIN
     %% Complete This
     %% Draw a function table first
     %% Minimize the function table but ensure it is complete and disjoint
+    COND
+	i <= 0 -> y1(i) = stop AND y2(i) = stop,
+	i > 0 -> COND
+	      %% Car enters
+	      x1(i) = on AND x2(i) = on -> y1(i) = go AND y2(i) = stop,
+	      %% Car is in and wants to leave
+	      x1(i) = off AND x2(i) = on AND y1(i-1) = stop AND y2(i-1) = stop -> y1(i) = stop AND y2(i) = go,
+	      x1(i) = off AND x2(i) = on AND NOT (y1(i-1) = stop AND y2(i-1) = stop) -> y1(i) = stop AND y2(i) = stop,
+	      x1(i) = off AND x2(i) = off -> y1(i) = go AND y2(i) = stop,
+	      x1(i) = on AND x2(i) = off AND y1(i-1) = stop AND y2(i-1) = stop -> y1(i) = go AND y2(i) = stop,
+	      x1(i) = on AND x2(i) = off AND NOT (y1(i-1) = stop AND y2(i-1) = stop) -> y1(i) = stop AND y2(i) = stop
+	ENDCOND
+    ENDCOND
 
   inv(i): bool =
     NOT (y1(i) = go AND y2(i) = go)
 
-  inv_holds: CONJECTURE
+  Inv_holds: CONJECTURE
      (FORALL i: control_ft(i))
     =>
      (FORALL i: inv(i))
@@ -43,7 +56,7 @@ BEGIN
      AND x1(3) = off AND x2(3) = on 
 
    %% entrance car goes first, then exit car
-   use_case1: CONJECTURE
+   Use_case1: CONJECTURE
       assume    
      =>
            y1(1) = go AND y2(1) = stop

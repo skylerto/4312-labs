@@ -1,0 +1,152 @@
+% !TEX encoding = UTF-8
+%Koma article
+\documentclass[fontsize=12pt,paper=letter,twoside]{scrartcl}
+\usepackage{multirow}
+
+%Useful preamble definitions
+\input{sty/defns.tex}
+\title{EECS4312 Lab 6}
+
+%%%%%%%%%%%%Enter your names here%%%%%%%%
+\author{Skyler Layne (cse23170\@cse.yorku.ca)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{\today} % Display a given date or no date
+
+
+\begin{document}
+\maketitle
+
+\section*{Revisions}
+
+%%%%%%%%%%%%Table of revisions%%%%%%%%
+\begin{tabular}{|l|l|p{3in}|}
+\hline
+Date & Revision& Description \\ 
+\hline
+4 November  2015
+& 1.0       
+& Initial specification of system, R/E- descriptions, and function table.\\ 
+\hline
+\end{tabular}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\tableofcontents
+\newpage
+
+%%%%Rest of your document goes here%%%%%%%%%%%%%%%%%%%
+
+%% Deactivate this to place your own work
+%\input{sty/sample.tex}
+
+%% Provide an introduction into the system.
+\section{System Introduction}
+\begin{figure}
+\center
+\includegraphics[width=.7\textwidth]{system.png}
+\caption{Reference design.}
+\end{figure}
+{The Entry/Exit of the parking lot is a single lane passage. By controlling the indicators, the program ensures that only one car can pass through the Entry/Exit so as to prevent a car accident between entering and leaving cars.}\\
+
+%%
+\newpage
+\section{E/R Descriptions}
+\subsection{Requirement Descriptions}
+%% R Description
+\begin{tabular}{ | p{2cm} | p{6cm}  | p{6cm} |}
+\hline
+REQ1 & The controller will allow only one car within the passage at a time. & By monitoring sensors the system will ensure both gates will not be open at the same time. \\
+\hline
+\end{tabular}
+\\
+\\
+\\
+%% R Description
+\begin{tabular}{ | p{2cm} | p{6cm}  | p{6cm} |}
+\hline
+REQ2 & A car wishing to park will have priority over the cars which want to leave.   & If both sensors are on, the entering gate will open. \\
+\hline
+\end{tabular}
+\\
+\\
+\\
+\subsection{Environment Descriptions}
+%% E Description
+\begin{tabular}{ | p{2cm} | p{6cm}  | p{6cm} |}
+\hline
+ENV1 & The sensors can only ever read ON or OFF.  & Only 2 states for each sensor. \\
+\hline
+\end{tabular}
+\\
+\\
+\\
+%% E Description
+\begin{tabular}{ | p{2cm} | p{6cm}  | p{6cm} |}
+\hline
+ENV2 & The actuators can only ever be GO or STOP.  & Can only ever indicate either 2 states. \\
+\hline
+\end{tabular}
+\\
+\\
+\\
+%% List of Variables Section
+\newpage
+\section{List of Variables}
+
+\subsection{Controlled Variables}
+
+{Each of the controlled variables represents an ACTUATOR which has two states; either STOP or GO.\\} 
+
+\begin{tabular}{ | p{2cm} | p{12cm}  |}
+\hline
+Name & Description  \\
+\hline
+X1 & Car entering sensor. ON when a car passes through the sense.    \\
+\hline
+X2 & Car leaving sensor. ON when a car passes through the sense.    \\
+\hline
+\end{tabular}
+\\
+\\
+
+\subsection{Monitored Variables}
+{Each of the monitored variables represents an SENSOR which has two states; either ON or OFF.\\}\\
+
+\begin{tabular}{ | p{2cm} | p{12cm}  |}
+\hline
+Name & Description  \\
+\hline
+Y1 & Car entering indicator, indicates GO when a car would like to enter.    \\
+\hline
+Y2 & Car leaving indicator, indicates GO when a car would like to leave.    \\
+\hline
+\end{tabular}
+
+% Function Table
+\newpage
+\section{Car Function Table}
+{The function table presents a variable 'i' in DTIME which captures the value of both, the sensors and actuators, at each DTIME step.}
+\\
+\\
+\begin{tabular}{ | p{5cm} | p{5cm} || p{5cm} || }
+\hline
+Input &  & Output \\
+\hline
+x1(i) = on AND x2(i) = on &  & y1(i) = go AND y2(i) = stop \\
+\hline
+\multirow{2}{*}{x1(i) = off AND x2(i) = on} & y1(i-1) = stop AND y2(i-1) = stop & y1(i) = stop AND y2(i) = go \\
+\cline{2-3}
+ & NOT (y1(i-1) = stop AND y2(i-1) = stop) & y1(i) = stop AND y2(i) = stop \\
+\hline
+\multirow{2}{*}{x1(i) = on AND x2(i) = off} & y1(i-1) = stop AND y2(i-1) = stop & y1(i) = go AND y2(i) = stop \\
+\cline{2-3}
+ & NOT (y1(i-1) = stop AND y2(i-1) = stop) & y1(i) = stop AND y2(i) = stop \\
+\hline
+x1(i) = off AND x2(i) = off &  & y1(i) = go AND y2(i) = stop\\
+\hline
+\end{tabular}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}  

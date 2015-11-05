@@ -41,17 +41,46 @@ Hysteresis[delta: posreal] : THEORY
     % =============================================
     hysteresis_st (XIN1, XIN2, EPS, Q): bool =
        %% Complete this
+       FORALL(i: DTIME):
+       COND
+	i = 0 -> Q(0) = 0,
+	i > 0 ->
+	  IF Q(i-1) = 1 THEN
+	     IF XIN1(i) < (XIN2(i) - EPS(i)) THEN
+	     	Q(i) = 0
+	     ELSE    %implicit from the ST
+	     	Q(i) = Q(i-1)
+	     ENDIF
+	  ELSIF XIN1(i) > (XIN2(i) + EPS(i)) THEN
+	  	Q(i) = 1
+	  ELSE %implicit from the ST
+	       Q(i) = Q(i-1)
+	  ENDIF
+       ENDCOND
 
 
  % environment assumption
     env (XIN1, XIN2, EPS): bool =
       %% Complete this
+      FORALL (i: DTIME): EPS(i) > 0
 
  % Black-box requirements of HYSTERESIS
     hysteresis_req (XIN1, XIN2, EPS, Q): bool = 
       %% Complete This
+      env(XIN1, XIN2, EPS) IMPLIES
+      FORALL (i: DTIME):
+      COND
+	i = 0 -> Q(0) = 0,
+	i > 0 ->
+	  COND
+		XIN1(i) >  (XIN2(i) + EPS(i)) -> Q(i) = 1,
+		XIN1(i) <= (XIN2(i) + EPS(i)) AND
+		XIN1(i) >= (XIN2(i) - EPS(i)) -> Q(i) = Q(i-1),
+		XIN1(i) < (XIN2(i) - EPS(i)) -> Q(i) = 0
+	  ENDCOND
+      ENDCOND
       
-    correct_hysteresis_st : THEOREM 
+    Correct_hysteresis_st : THEOREM 
         (env (XIN1, XIN2, EPS)
          AND
          hysteresis_st (XIN1, XIN2, EPS, Q))
