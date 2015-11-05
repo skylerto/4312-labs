@@ -1,0 +1,66 @@
+% See section 2.6 in the pdf for the Isolette
+
+alert: THEORY
+BEGIN
+  delta: posreal = 0.5 % TR = 0.5 seconds
+  IMPORTING Time[delta]
+
+  p:     [DTIME -> real]  % Pressure
+  alarm: [DTIME -> bool]
+
+  hi: real
+
+  response(i:DTIME): bool =
+    COND
+        i = 0 -> NOT alarm(0) 
+      , i > 0 -> 
+        COND
+            p(i) >= hi
+	  -> alarm(i)=TRUE,
+            p(i) < hi AND held_for(alarm,1.5)(i-1)
+	  -> alarm(i) = FALSE,
+            p(i) < hi AND NOT held_for(alarm,1.5)(i-1)
+	  -> alarm(i) = alarm(i-1)
+          ENDCOND
+   ENDCOND
+
+  i: VAR DTIME
+  % usecase: CONJECTURE
+  %         (FORALL i: response(i))
+  %     AND p(0) < hi AND p(1) < hi 
+  %     AND p(2) = hi AND p(3) = hi
+  %     AND p(4) < hi AND p(5) < hi AND p(6) < hi
+  %   IMPLIES
+  %          (NOT alarm(0)) AND (NOT alarm(1))
+  %     AND alarm(2) AND alarm(3) AND alarm(4) AND alarm(5)
+  %     AND (NOT alarm(6))
+
+% It is easier to prove that the "response" function table
+% satisfies the above use case (in the comments) by proceeding
+% step by step. For example:
+
+  pre_uc1: bool =
+        p(0) < hi AND p(1) < hi 
+    AND p(2) = hi AND p(3) = hi
+    AND response(0)
+    AND response(1)
+    AND response(2)
+    AND response(3)
+
+  post_uc1: bool =
+     (NOT alarm(0)) AND (NOT alarm(1))
+      AND alarm(2) AND alarm(3)
+
+  usecase1_lemma1: LEMMA
+      pre_uc1
+    IMPLIES
+      post_uc1
+
+% The above LEMMA is the first step and can be re-used to get to the 
+% next step which is that alarm(4) holds.
+
+% Now you do the rest to prove the complete Use Case above (from Section 2.6).
+       
+END alert
+
+

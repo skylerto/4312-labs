@@ -1,0 +1,11 @@
+% Exercises for Lab7
+% % proveit --importchain --clean top.pvs
+
+top : THEORY
+BEGIN
+   IMPORTING Time
+   IMPORTING Hysteresis
+   IMPORTING Limits_Alarm
+   IMPORTING test
+   IMPORTING alert
+END top
