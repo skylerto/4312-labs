@@ -28,6 +28,10 @@ Date & Revision& Description \\
 & 1.0       
 & Initial specification of system, R/E- descriptions, and function table.\\ 
 \hline
+5 November  2015
+& 2.0       
+& Fixed function table to include bounds on 'i'. \\ 
+\hline
 \end{tabular}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -128,23 +132,18 @@ Y2 & Car leaving indicator, indicates GO when a car would like to leave.    \\
 {The function table presents a variable 'i' in DTIME which captures the value of both, the sensors and actuators, at each DTIME step.}
 \\
 \\
-\begin{tabular}{ | p{5cm} | p{5cm} || p{5cm} || }
+\begin{tabular}{|l|l|l|l|l|}
 \hline
-Input &  & Output \\
-\hline
-x1(i) = on AND x2(i) = on &  & y1(i) = go AND y2(i) = stop \\
-\hline
-\multirow{2}{*}{x1(i) = off AND x2(i) = on} & y1(i-1) = stop AND y2(i-1) = stop & y1(i) = stop AND y2(i) = go \\
-\cline{2-3}
- & NOT (y1(i-1) = stop AND y2(i-1) = stop) & y1(i) = stop AND y2(i) = stop \\
-\hline
-\multirow{2}{*}{x1(i) = on AND x2(i) = off} & y1(i-1) = stop AND y2(i-1) = stop & y1(i) = go AND y2(i) = stop \\
-\cline{2-3}
- & NOT (y1(i-1) = stop AND y2(i-1) = stop) & y1(i) = stop AND y2(i) = stop \\
-\hline
-x1(i) = off AND x2(i) = off &  & y1(i) = go AND y2(i) = stop\\
-\hline
+\multicolumn{3}{|l|}{}                                                                                                                                              & Y1           & Y2           \\ \hline
+\multicolumn{3}{|l|}{i = 0}                                                                                                                                         & y1(i) = go   & y2(i) = stop \\ \hline
+\multirow{6}{*}{i \textgreater 0} & \multicolumn{2}{l|}{x1(i) = on AND x2(i) = on}                                                                                  & y1(i) = go   & y2(i) = stop \\ \cline{2-5} 
+                                  & \multirow{2}{*}{x1(i) = off AND x2(i) = on} & \begin{tabular}[c]{@{}l@{}}y1(i-1) = stop AND y2(i-1)\\ = stop\end{tabular}       & y1(i) = stop & y2(i) = go   \\ \cline{3-5} 
+                                  &                                             & \begin{tabular}[c]{@{}l@{}}NOT (y1(i-1) = stop AND\\ y2(i-1) = stop)\end{tabular} & y1(i) = stop & y2(i) = stop \\ \cline{2-5} 
+                                  & \multirow{2}{*}{}                           & \begin{tabular}[c]{@{}l@{}}y1(i-1) = stop AND y2(i-1)\\ = stop\end{tabular}       & y1(i) = go   & y2(i) = stop \\ \cline{3-5} 
+                                  &                                             & \begin{tabular}[c]{@{}l@{}}NOT (y1(i-1) = stop AND\\ y2(i-1) = stop)\end{tabular} & y1(i) = stop & y2(i) = stop \\ \cline{2-5} 
+                                  & \multicolumn{2}{l|}{x1(i) = off AND x2(i) = off}                                                                                & y1(i) = go   & y2(i) = stop \\ \hline
 \end{tabular}
+%\end{table}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
