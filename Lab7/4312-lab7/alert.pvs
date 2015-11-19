@@ -25,15 +25,15 @@ BEGIN
    ENDCOND
 
   i: VAR DTIME
-  % usecase: CONJECTURE
-  %         (FORALL i: response(i))
-  %     AND p(0) < hi AND p(1) < hi 
-  %     AND p(2) = hi AND p(3) = hi
-  %     AND p(4) < hi AND p(5) < hi AND p(6) < hi
-  %   IMPLIES
-  %          (NOT alarm(0)) AND (NOT alarm(1))
-  %     AND alarm(2) AND alarm(3) AND alarm(4) AND alarm(5)
-  %     AND (NOT alarm(6))
+   usecase: CONJECTURE
+           (FORALL i: response(i))
+       AND p(0) < hi AND p(1) < hi 
+       AND p(2) = hi AND p(3) = hi
+       AND p(4) < hi AND p(5) < hi AND p(6) < hi
+     IMPLIES
+            (NOT alarm(0)) AND (NOT alarm(1))
+       AND alarm(2) AND alarm(3) AND alarm(4) AND alarm(5)
+       AND (NOT alarm(6))
 
 % It is easier to prove that the "response" function table
 % satisfies the above use case (in the comments) by proceeding
