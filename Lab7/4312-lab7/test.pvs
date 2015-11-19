@@ -1,0 +1,28 @@
+test : THEORY
+BEGIN
+delta: posreal = 1.0
+IMPORTING Time[delta]
+input(i:DTIME): real = 
+		COND
+			i < 2 -> 1.0,
+			2 <= i AND i<= 4 -> 5.0,
+			i > 4 -> 1.0
+		ENDCOND
+hi(i:DTIME): bool = input(i) = 5
+
+check1: CONJECTURE held_for(hi, 2)(0) = hi(0)
+check1a: CONJECTURE hi(0) = False
+
+check2: CONJECTURE (held_for(hi, 2)(1) = (hi(0) AND hi(1))) AND (NOT held_for(hi,2)(1))
+check2a: CONJECTURE hi(1) = False
+
+check3: CONJECTURE held_for(hi,2)(2) = (hi(0) AND hi (1) AND hi(2)) AND (NOT held_for(hi,2)(2))
+check3a: CONJECTURE hi(2) = True
+
+check4: CONJECTURE held_for(hi,2)(3) = (hi(1) AND hi (2) AND hi(3)) AND (NOT held_for(hi,2)(2))
+check4a: CONJECTURE hi(3) = True
+
+check6: CONJECTURE held_for(hi,2)(4) = (hi(2) AND hi (3) AND hi(4)) AND (held_for(hi,2)(4))
+check6a: CONJECTURE hi(4) = True
+
+END test

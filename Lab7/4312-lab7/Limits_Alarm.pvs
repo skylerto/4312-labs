@@ -35,16 +35,13 @@ limits_alarm_fbd (H, X, L, EPS, QH, Q, QL): bool = EXISTS (w1, w2, w3 : [DTIME -
 
 env_1 (H, X, L, EPS): bool = FORALL (i: DTIME): EPS(i) > 0
 
-high_alarm_req (H, X, L, EPS): bool = env_1 (H, X, L, EPS) IMPLIES X(i) < H(i) AND X(i) > H(i) - EPS(i)
+high_alarm_req (H, X, L, EPS): bool = env_1 (H, X, L, EPS) IMPLIES (FORALL (i:DTIME): X(i) < H(i) AND X(i) > H(i) - EPS(i))
 
-low_alarm_req (H, X, L, EPS): bool = env_1 (H, X, L, EPS) IMPLIES  X(i) > L(i) AND X(i) < L(i) + EPS(i)
+low_alarm_req (H, X, L, EPS): bool = env_1 (H, X, L, EPS) IMPLIES  (FORALL (i:DTIME): X(i) > L(i) AND X(i) < L(i) + EPS(i))
 
 
 
-limits_alarm_req (H, X, L, EPS, QH, Q, QL): bool =
-high_alarm_req (H, X, L, EPS, QH)
-AND low_alarm_req (H, X, L, EPS, QL)
-AND gte_one (QH, QL, Q)
+limits_alarm_req (H, X, L, EPS, QH, Q, QL): bool = high_alarm_req (H, X, L, EPS) AND low_alarm_req (H, X, L, EPS) AND gte_one (QH, QL, Q)
 
 correct_limits_alarm_fbd : THEOREM
 	(env_1 (H, X, L, EPS)
@@ -54,9 +51,11 @@ IMPLIES
       limits_alarm_req (H, X, L, EPS, QH, Q, QL)
 
 % 2nd environment assumption. What does it mean?
-env_2 (H, X, L, EPS): bool = ???
+env_2 (H, X, L, EPS): bool = NOT (high_alarm_req (H, X, L, EPS) AND low_alarm_req (H, X, L, EPS)) 
+
 no_simultaneous_alarms (QH, Q, QL): bool =
 FORALL (i: DTIME): NOT( QH(i) = 1 AND QL(i) = 1 )
+
 req_entails_inv : THEOREM
 ( env_1 (H, X, L, EPS) AND env_2 (H, X, L, EPS)
 AND limits_alarm_req (H, X, L, EPS, QH, Q, QL) ) IMPLIES no_simultaneous_alarms (QH, Q, QL)
