@@ -1,0 +1,195 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BigBank Based on records and with dependent typing using records
+% Add withdraw command to fix type correctness problem.
+% Then prove all the conjectures
+% Some hints are given as proveit strategies
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+BigBank2: THEORY
+BEGIN
+  delta: posreal % sampling time
+  IMPORTING Time[delta]
+  i: VAR DTIME
+ %Constants
+  n: posnat    % maximum number of bank account id's
+  max: posreal % maximum balance allowed
+% Types
+  ACC_ID : TYPE = {id : posnat | id <= n} CONTAINING 1
+    % set of account id's
+  STATUS   : TYPE = {ok, error}
+  NAME: TYPE+
+  id : VAR ACC_ID
+
+% Monitored Events
+  COMMAND : DATATYPE
+    BEGIN
+      %nothing                           :nothing?
+      add_account(id:ACC_ID, n: NAME)   :add_account?
+      delete_account(id:ACC_ID)         :delete_account?
+      deposit (id: ACC_ID, v:real)      :deposit?
+    END COMMAND
+  cmd: VAR [POS_DTIME -> COMMAND]
+
+% Abstract state using a record with dependent typing
+  STATE: TYPE =
+    [# accs :  set[ACC_ID]      % Accounts
+      ,name :  [(accs) -> NAME] % Names
+      ,bal  :  [(accs) -> real] % Balances
+    #]
+    
+  st : VAR [ DTIME -> STATE ]
+
+  % Definition of an empty function
+  emptyfun [T, U : TYPE] (x : {x : T | FALSE}) : RECURSIVE U = 
+    emptyfun(x) 
+    MEASURE (LAMBDA (x : {x : T | FALSE}): 1) 
+
+  init_state: STATE = 
+   (# accs := emptyset
+    ,  name := emptyfun 
+    ,  bal := emptyfun
+    #)
+
+  % In the standard set theory we can us add and subtract
+  add_account_ft(id:ACC_ID,n:NAME)(st)(i:POS_DTIME): bool =
+    COND
+        NOT st(i-1)`accs(id)
+      -> % id is available, and not in use
+        st(i) = (# accs := add(id,accs_)
+	          ,name := name_ WITH [id := n]
+		  ,bal  := bal_ WITH [id := 0]
+		#),
+         ELSE
+      -> st(i) = st(i-1)
+    ENDCOND
+    where
+       accs_ = st(i-1)`accs
+      ,name_ = st(i-1)`name
+      ,bal_ = st(i-1)`bal
+
+
+
+  % domain restriction
+  SET_ID : TYPE+ = set[ACC_ID]
+
+  delete_account_ft(id:ACC_ID)(st)(i:POS_DTIME): bool =
+    COND
+      st(i-1)`accs(id) ->
+        st(i) = (# accs  := remove(id,accs_)
+	          ,name := restrict(name_) % subtract(name_,id)
+		  ,bal  := restrict(bal_)  % subtract(bal_,id)
+		#),
+     ELSE -> st(i) = st(i-1)
+    ENDCOND
+    where
+       accs_ = st(i-1)`accs
+      ,name_ = st(i-1)`name
+      ,bal_ = st(i-1)`bal
+
+  deposit_ft (id: ACC_ID, v:real)(st)(i:POS_DTIME): bool =
+    COND
+      st(i-1)`accs(id) AND v > 0 ->
+        st(i) = (#  accs := accs_
+	           ,name := name_
+		   ,bal  := bal_ WITH [id := bal_(id) + v]
+		#),
+     ELSE -> st(i) = st(i-1)
+    ENDCOND
+    where
+       accs_ = st(i-1)`accs
+      ,name_ = st(i-1)`name
+      ,bal_ = st(i-1)`bal
+
+  withdraw_ft (id: ACC_ID, v:real)(st)(i:POS_DTIME): bool =
+    COND
+      st(i-1)`accs(id) AND v > 0 AND st(i-1)`bal(id) - v >= 0->
+        st(i) = (#  accs := accs_
+	           ,name := name_
+		   ,bal  := bal_ WITH [id := bal_(id) - v]
+		#),
+     ELSE -> st(i) = st(i-1)
+    ENDCOND
+    where
+       accs_ = st(i-1)`accs
+      ,name_ = st(i-1)`name
+      ,bal_ = st(i-1)`bal
+
+  bank_ft(cmd) (st)(i) : bool =
+    COND
+      i = 0 -> st(0) = init_state,
+      i > 0 -> 
+        CASES cmd(i) OF
+           add_account(id,n) : add_account_ft(id,n)(st)(i)
+	  ,delete_account(id): delete_account_ft(id)(st)(i)
+	  ,deposit (id,v)    : deposit_ft (id, v)(st)(i)
+	  ,withdraw (id,v)   : withdraw_ft (id, v)(st)(i)
+        ENDCASES
+    ENDCOND
+
+  inv1(st)(i : DTIME): bool = 
+    (FORALL (id : (st(i)`accs)) : 0 <= st(i)`bal(id) )
+
+  inv1_add_account : CONJECTURE
+    (FORALL i (n: NAME): inv1(st)(i) AND add_account_ft(id,n)(st)(i+1) => inv1(st)(i+1)) 
+
+%|- inv1_add_account : PROOF
+%|- (then (skeep) (skeep) (expand "inv1") (expand "add_account_ft")
+%|-  (spread (split -2)
+%|-   ((then (flatten) (skeep) (replace -1 2) (simplify) (lift-if 2)
+%|-     (spread (split 2) ((assert) (then (flatten) (inst -2 "id!2")))))
+%|-    (then (flatten) (skeep)
+%|-     (spread (inst -3 "id!2")
+%|-      ((then (replace -2) (propax))
+%|-       (then (typepred "id!2") (replace -5) (propax))))))))
+%|- QED
+
+
+  inv1_delete_account : CONJECTURE
+    (FORALL i: inv1(st)(i) AND delete_account_ft(id)(st)(i+1) => inv1(st)(i+1)) 
+
+%|- inv1_delete_account : PROOF
+%|- (then (skeep) (expand "inv1") (expand "delete_account_ft")
+%|-  (spread (split -2)
+%|-   ((then (flatten) (skeep) (replace -2) (simplify) (typepred "id!2")
+%|-     (expand "restrict") (inst -6 "id!2"))
+%|-    (then (flatten) (replace -1) (replace -1 2 RL) (replace -1 -2 RL)
+%|-     (skeep) (inst -2 "id!2") (reveal -1) (typepred "id!2")
+%|-     (replace -5 -3) (propax)))))
+%|- QED
+
+
+  inv1_deposit : CONJECTURE
+    (FORALL i (v : real): inv1(st)(i) AND deposit_ft(id,v)(st)(i+1) => inv1(st)(i+1)) 
+
+%|- inv1_deposit : PROOF
+%|- (then (skeep) (skeep) (expand "inv1") (expand "deposit_ft")
+%|-  (spread (split -2)
+%|-   ((then (flatten) (skeep) (typepred "id!2") (replace -6) (simplify)
+%|-     (lift-if 1)
+%|-     (spread (split 1)
+%|-      ((then (inst -7 "id!1") (assert))
+%|-       (then (inst -7 "id!2") (assert)))))
+%|-    (then (flatten) (skeep) (typepred "id!2") (replace -4)
+%|-     (inst -5 "id!2")))))
+%|- QED
+
+
+
+  inv1_check: CONJECTURE
+    (FORALL i: bank_ft(cmd)(st)(i)) => (FORALL i : inv1(st)(i))
+
+
+   jon, pam: NAME
+
+   use_case1: CONJECTURE
+         n >= 2 AND st(0) = init_state
+     AND (FORALL i: bank_ft(cmd) (st)(i))
+     AND cmd(1) = add_account(1,jon)
+     AND cmd(2) = add_account(2,pam)
+     AND cmd(3) = delete_account(1)
+     =>
+     st(3)`accs(2)
+
+  
+
+END BigBank2

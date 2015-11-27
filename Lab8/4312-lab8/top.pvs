@@ -1,0 +1,9 @@
+% Exercises for Lab8
+% % proveit --importchain --clean top.pvs
+
+top : THEORY
+BEGIN
+   IMPORTING Time
+   IMPORTING BigBank1
+   IMPORTING BigBank2
+END top

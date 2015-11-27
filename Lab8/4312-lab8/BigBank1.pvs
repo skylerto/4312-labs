@@ -1,0 +1,144 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% BigBank with accounts referencesd by IDs
+%% and the ability to also transfer money
+%% Prove all the conjectures in the theory
+%% excluding  invariant2_preservation
+%% which is a challenge question for
+%% your enjoyment (but not the faint of heart)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+BigBank1: THEORY
+BEGIN
+  delta: posreal % sampling time
+  IMPORTING Time[delta]
+  % IMPORTING number_fields
+  i: VAR DTIME
+
+ %Constants
+  n: posnat % maximum number of bank account id's
+  max: posreal % maximum balance allowed
+
+% Types
+  ACC_ID : TYPE = {id : posnat | id <= n} % set of account id's
+  IMPORTING reals@sigma[ACC_ID]
+  % for summation operator over an interval
+  % from the NasaLib
+
+  STATUS   : TYPE = {ok, error}
+  RESPONSE : TYPE = [DTIME -> STATUS]
+
+% Monitored Events
+  COMMAND : DATATYPE
+    BEGIN
+      nothing                           :isNothing?
+      deposit (id: int, v:real)         :isDeposit? % deposit event
+      withdraw (id: int, v:real)        :isWithdraw? % withdraw event
+      transfer (id1, id2: int, v: real) :isTransfer? % transfer event
+    END COMMAND
+  cmd: VAR [DTIME -> COMMAND]
+
+% Abstract state
+  b: VAR [DTIME -> [ACC_ID -> real]] % account balances
+  s: VAR [DTIME -> real] % sum of account balances
+  r: VAR [DTIME -> STATUS]
+
+% Initial Condition
+  initial(b,s,r): bool = 
+    s(0) = 0 AND (FORALL (id : ACC_ID) : b(0)(id) = 0) AND r(0) = ok
+
+  % Is id a valid id?
+  elem(id:int): bool =
+    0 < id AND id <= n
+
+%Sub Function Tables
+  nothing_ft(b, s, r)(i:POS_DTIME): bool = 
+    b(i) = b(i-1) AND s(i) = s(i-1) AND r(i) = error
+
+  deposit_ft(id:int, v:real)(b, s, r)(i:POS_DTIME): bool = 
+    COND
+         elem(id) AND 0 < v AND v + b(i-1)(id) <= max 
+      -> b(i) = b(i-1) WITH [id := b(i-1)(id) + v] AND s(i) = s(i-1) + v AND r(i) = ok,
+       ELSE 	    	  	  
+      -> b(i) = b(i-1) AND s(i) = s(i-1) AND r(i) = error
+    ENDCOND
+
+  withdraw_ft(id:int, v:real)(b, s, r)(i:POS_DTIME): bool = 
+    COND
+         elem(id) AND v > 0 AND 0 <= b(i-1)(id) - v   
+      -> b(i) = b(i-1) WITH [id := b(i-1)(id) - v] AND s(i) = s(i-1) - v AND r(i) = ok,
+         ELSE 
+      -> b(i) = b(i-1) AND s(i) = s(i-1) AND r(i) = error
+    ENDCOND
+ 
+  transfer_ft(id1,id2:int, v:real)(b,s,r)(i:POS_DTIME): bool = 
+    COND
+             elem(id1) AND elem(id2)
+         AND NOT(id1 = id2) 
+         AND 0 <= b(i-1)(id1) - v 
+         AND b(i-1)(id2) +v <= max
+         AND 0 < v
+      ->     b(i) = b(i-1) WITH [id1 := b(i-1)(id1) - v, id2 := b(i-1)(id2) + v ] 
+         AND s(i) = s(i-1) AND r(i) =ok,
+         ELSE
+      -> b(i-1) = b(i) AND s(i-1) = s(i) AND r(i) = error
+    ENDCOND
+
+  bank_ft(cmd) (b, s, r)(i) : bool =
+    COND
+      i = 0 -> initial(b,s,r),
+      i > 0 -> 
+        CASES cmd(i) OF
+          nothing: nothing_ft(b, s, r)(i),
+          deposit(id, v)        : deposit_ft(id,v)(b,s,r)(i),
+          withdraw (id, v)      : withdraw_ft(id,v)(b,s,r)(i),
+          transfer (id1, id2, v): transfer_ft(id1,id2,v)(b,s,r)(i)
+        ENDCASES
+    ENDCOND
+
+% Invariants
+  inv1(b)(i): bool = 
+    (FORALL (id : ACC_ID) : 0 <= b(i)(id) AND b(i)(id) <= max)
+
+   invariant1_preservation : CONJECTURE 
+      (FORALL i: bank_ft(cmd) (b, s, r)(i)) 
+      =>
+      (FORALL i : inv1(b)(i)) 
+
+
+
+
+  use_case1: CONJECTURE
+          n >=2 AND max >= 200 
+      AND b(0)(1) = 0 AND b(0)(2)= 0
+      AND (FORALL i:  bank_ft(cmd) (b, s, r)(i))
+      AND cmd(1) = deposit(1, 150)
+      AND cmd(2) = deposit(2, 200)
+      AND cmd(3) = nothing
+      AND cmd(4) = withdraw(2, 25)
+      AND cmd(5) = transfer(1, 2, 10)
+      =>
+          b(5)(1) = 140
+      AND b(5)(2) = 185
+
+       
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The following is a hard challenge question
+%% and is NOT required for the Lab
+%% It is only hard because the Sigma theory in the NasaLib needs
+%% more development.
+
+% Sum of all bank balances must equal s
+  inv2(b,s)(i:DTIME): bool =
+        sigma(1, n, b(i)) = s(i)
+
+
+ invariant2_preservation : CONJECTURE 
+      (FORALL i: bank_ft(cmd) (b, s, r)(i)) 
+      =>
+      (FORALL i : inv2(b,s)(i) )
+
+
+
+END BigBank1
+
