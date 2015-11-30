@@ -27,6 +27,7 @@ BEGIN
       add_account(id:ACC_ID, n: NAME)   :add_account?
       delete_account(id:ACC_ID)         :delete_account?
       deposit (id: ACC_ID, v:real)      :deposit?
+      withdraw (id: ACC_ID, v:real)      :withdraw?
     END COMMAND
   cmd: VAR [POS_DTIME -> COMMAND]
 
