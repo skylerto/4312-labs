@@ -222,10 +222,7 @@
     (real_gt_is_strict_total_order name-judgement
      "(strict_total_order?[real])" real_props nil)
     (member const-decl "bool" sets nil)
-    (add const-decl "(nonempty?)" sets nil)
-    (st!1 skolem-const-decl "[DTIME[delta] -> STATE]" BigBank2 nil)
-    (i!1 skolem-const-decl "DTIME[delta]" BigBank2 nil)
-    (id!2 skolem-const-decl "(st!1(1 + i!1)`accs)" BigBank2 nil)
+    (add const-decl "(nonempty?)" sets nil) nil nil nil
     (int_minus_int_is_int application-judgement "int" integers nil)
     (+ const-decl "[numfield, numfield -> numfield]" number_fields nil)
     (numfield nonempty-type-eq-decl nil number_fields nil)
@@ -269,10 +266,7 @@
      real_props nil)
     (real_gt_is_strict_total_order name-judgement
      "(strict_total_order?[real])" real_props nil)
-    (st!1 skolem-const-decl "[DTIME[delta] -> STATE]" BigBank2 nil)
-    (i!1 skolem-const-decl "DTIME[delta]" BigBank2 nil)
-    (id!2 skolem-const-decl "(st!1(1 + i!1)`accs)" BigBank2 nil)
-    (/= const-decl "boolean" notequal nil)
+    nil nil nil (/= const-decl "boolean" notequal nil)
     (member const-decl "bool" sets nil)
     (remove const-decl "set" sets nil)
     (restrict const-decl "R" restrict nil)
@@ -327,10 +321,7 @@
     nil)
    ((nnint_plus_posint_is_posint application-judgement "posint"
      integers nil)
-    (deposit_ft const-decl "bool" BigBank2 nil)
-    (st skolem-const-decl "[DTIME[delta] -> STATE]" BigBank2 nil)
-    (i skolem-const-decl "DTIME[delta]" BigBank2 nil)
-    (id!2 skolem-const-decl "(st(i + 1)`accs)" BigBank2 nil)
+    (deposit_ft const-decl "bool" BigBank2 nil) nil nil nil
     (+ const-decl "[numfield, numfield -> numfield]" number_fields nil)
     (numfield nonempty-type-eq-decl nil number_fields nil)
     (STATE type-eq-decl nil BigBank2 nil)
