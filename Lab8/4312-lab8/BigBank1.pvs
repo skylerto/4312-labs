@@ -65,7 +65,8 @@ BEGIN
   withdraw_ft(id:int, v:real)(b, s, r)(i:POS_DTIME): bool = 
     COND
          elem(id) AND v > 0 AND 0 <= b(i-1)(id) - v   
-      -> b(i) = b(i-1) WITH [id := b(i-1)(id) - v] AND s(i) = s(i-1) - v AND r(i) = ok,
+      -> b(i) = b(i-1) WITH [id := b(i-1)(id) - v] AND s(i) = s(i-1) - v AND r(i:
+      ) = ok,
          ELSE 
       -> b(i) = b(i-1) AND s(i) = s(i-1) AND r(i) = error
     ENDCOND
