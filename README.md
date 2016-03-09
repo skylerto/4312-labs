@@ -1,6 +1,6 @@
 # Software Engineering Requirements
 
-This repository is for a course I'm taking called Software Engineering Requirements (EECS4312).  
+The lab component of a course called Software Engineering Requirements.
 
 ## Description  
 This material is in regards to the laboratories, all the code is in PVS and is intended to host and keep me up to date with my work.
@@ -15,4 +15,4 @@ This material is in regards to the laboratories, all the code is in PVS and is i
  - Lab5 : SUBMITTED
  - Lab6 : SUBMITTED
  - Lab7 : SUBMITTED
- - Lab8 : COMPLETED
+ - Lab8 : SUBMITTED
